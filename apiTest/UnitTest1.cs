@@ -1,4 +1,4 @@
-namespace api.Tests;
+namespace apiTest;
 
 public class UnitTest1
 {
