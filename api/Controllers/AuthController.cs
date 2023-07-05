@@ -9,9 +9,9 @@ namespace api.Controllers
         public AuthController(){}
 
         [HttpGet]
-        public async Task<IActionResult> Test()
+        public IActionResult Test()
         {
-            return Ok(new {message = "App is healthy"});
+            return Ok(new { message = "App is healthy" });
         }
     }
 }
