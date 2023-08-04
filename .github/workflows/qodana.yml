@@ -23,6 +23,7 @@ jobs:
         with:
           args: --baseline,qodana.sarif.json
           fail-threshold: 5
+          use-annotations: true
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }} # read the steps about it below
       
