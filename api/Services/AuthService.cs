@@ -1,7 +1,7 @@
 ﻿using api.Database;
 using api.Interfaces;
 using Microsoft.EntityFrameworkCore;
-
+using BC = BCrypt.Net.BCrypt;
 namespace api.Services;
 
 public class AuthService : IAuthService
@@ -13,6 +13,7 @@ public class AuthService : IAuthService
     {
         _context = databaseContext;
     }
+   
 
     public async Task<bool> UserExistsAsync(string email)
     {
