@@ -1,6 +1,6 @@
-﻿namespace api.Helpers.Interfaces;
+﻿namespace api.Interfaces;
 
-public interface IAuthHelperService
+public interface IPasswordService
 {
     string CreatePasswordHash(string rawPassword);
 
