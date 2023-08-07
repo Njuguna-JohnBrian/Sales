@@ -38,7 +38,7 @@ public class AuthService : IAuthService
             LastName = registrationDto.LastName,
             Email = registrationDto.Email,
             PasswordHash = _passwordService.CreatePasswordHash(registrationDto.Password),
-            RegistrationDTM = DateTime.Now,
+            RegistrationDtm = DateTime.Now,
         };
 
         await _context.UserEntities.AddAsync(user);
