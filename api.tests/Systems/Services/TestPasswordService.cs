@@ -1,18 +1,11 @@
-﻿namespace api.tests.Systems.Helpers;
+﻿namespace api.tests.Systems.Services;
 
-public class TestAuthService
+public class TestPasswordService
 {
-    private readonly Mock<IPasswordService> _mockPasswordService;
-    private readonly PasswordService _passwordService;
+    private readonly Mock<IPasswordService> _mockPasswordService = new();
+    private readonly PasswordService _passwordService = new();
     private const string RawPassword = "testRawPassword";
     private const string HashedPassword = "$2a$11$LVXwqU32liNoOMql.jthMuhMgzTz/eBqTVS7xGfhXlqwmgWzyRMDC";
-
-
-    public TestAuthService()
-    {
-        _mockPasswordService = new Mock<IPasswordService>();
-        _passwordService = new PasswordService();
-    }
 
 
     [Fact]
