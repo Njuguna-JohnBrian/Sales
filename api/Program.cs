@@ -6,6 +6,8 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<PasswordService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddControllers();
 
