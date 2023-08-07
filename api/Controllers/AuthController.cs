@@ -1,4 +1,4 @@
-using api.Interfaces;
+using api.DTOs;
 using api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,8 +16,17 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<bool> RegisterUserAsync()
+    public async Task<IActionResult> RegisterUserAsync([FromBody] RegistrationDto registrationDto)
     {
-        return await _authService.UserExistsAsync("njugunajb@gmail.com");
+        var userExists = await _authService.UserExistsAsync(registrationDto.Email);
+
+        if (userExists)
+        {
+            return Conflict(new { message = "User exists" });
+        }
+
+        var result = await _authService.SaveUserAsync(registrationDto);
+
+        return Ok(new { token = result });
     }
 }
