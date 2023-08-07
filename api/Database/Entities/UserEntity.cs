@@ -16,6 +16,6 @@ public class UserEntity
     public DateTime? UpdatedDTM { get; set; }
     public bool IsDeleted { get; set; }
     public long? DeletedBy { get; set; }
-    public DateTime DeletedDTM { get; set; }
+    public DateTime? DeletedDTM { get; set; }
     [Timestamp] public virtual byte[] RowVersion { get; set; }
 }
