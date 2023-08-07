@@ -45,7 +45,7 @@ public class AuthService : IAuthService
 
         await _context.SaveChangesAsync();
 
-        var token = _tokenService.CreateToken(user, new List<string> { user.FirstName, user.LastName, user.Email });
+        var token = _tokenService.CreateToken(user, new List<string> { "firstName", "lastName", "email", "id" });
         return token;
     }
 }
