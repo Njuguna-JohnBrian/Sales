@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using api.Interfaces;
@@ -14,15 +15,12 @@ public class TokenService : ITokenService
         _configuration = configuration;
     }
 
-
-    public string CreateToken(dynamic targetEntity, List<string> claimTarget)
+    public string CreateToken<TEntity>(TEntity entity, List<string> claimTarget) where TEntity : class
     {
-        if (targetEntity == null) throw new ArgumentNullException(nameof(targetEntity));
+        if (entity == null) throw new ArgumentNullException(nameof(entity));
 
 
-        var claims = (from target in claimTarget
-            let claimValue = GetClaimValue(targetEntity, target)
-            select new Claim(target, claimValue)).ToList();
+        var claims = (from target in claimTarget let claimValue = GetClaimValue(entity, target) select new Claim(target, claimValue)).ToList();
 
         var secret = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Token"]!));
         var credentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha512Signature);
@@ -41,9 +39,13 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public string GetClaimValue(dynamic targetEntity, string target)
+    public string GetClaimValue<TEntity>(TEntity entity, string target) where TEntity : class
     {
-        var property = targetEntity.GetType().GetProperty(target);
-        return property?.GetValue(targetEntity)?.ToString() ?? string.Empty;
+        var property = typeof(TEntity).GetProperty(target,
+            BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+
+        if (property == null) return string.Empty;
+        var propertyValue = property.GetValue(entity);
+        return (propertyValue != null ? propertyValue.ToString() : string.Empty)!;
     }
 }
