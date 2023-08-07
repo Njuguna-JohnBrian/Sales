@@ -11,7 +11,7 @@ public class DatabaseContext : DbContext
     }
 
 
-    public virtual DbSet<UserEntity> UserEntities { get; set; }
+    public virtual required DbSet<UserEntity> UserEntities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
