@@ -1,6 +1,8 @@
-﻿namespace api.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public class IErrorService
+namespace api.Interfaces;
+
+public interface IErrorService
 {
-    
+    ObjectResult CatchException(Exception exception, string? errorMessage);
 }
