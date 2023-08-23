@@ -41,6 +41,8 @@ builder.Services.AddSwaggerGen(swaggerGen =>
             Array.Empty<string>()
         }
     });
+
+    swaggerGen.EnableAnnotations();
 });
 
 builder.Services.AddEndpointsApiExplorer();
