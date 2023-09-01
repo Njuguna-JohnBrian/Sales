@@ -1,10 +1,11 @@
-﻿using api.DTOs;
+﻿using api.Database.Entities;
+using api.DTOs;
 
 namespace api.Interfaces;
 
 public interface IAuthService
 {
-    Task<bool> UserExistsAsync(string email);
+    Task<UserEntity?> UserExistsAsync(string email);
 
     Task<string> SaveUserAsync(RegistrationDto registrationDto);
 }
