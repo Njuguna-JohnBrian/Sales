@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
+using api.Database.Entities;
 using Microsoft.IdentityModel.Tokens;
 using api.Interfaces;
 
@@ -15,37 +16,27 @@ public class TokenService : ITokenService
         _configuration = configuration;
     }
 
-    public string CreateToken<TEntity>(TEntity entity, List<string> claimTarget) where TEntity : class
+
+    public string CreateToken(UserEntity userEntity)
     {
-        if (entity == null) throw new ArgumentNullException(nameof(entity));
+        if (userEntity == null) throw new NullReferenceException();
 
-
-        var claims = (from target in claimTarget let claimValue = GetClaimValue(entity, target) select new Claim(target, claimValue)).ToList();
+        var claims = new List<Claim>()
+        {
+            new("firstName", userEntity.FirstName),
+            new("lastName", userEntity.LastName),
+            new("email", userEntity.Email),
+            new("id", userEntity.Id.ToString()),
+        };
 
         var secret = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Token"]!));
         var credentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha512Signature);
-
         var token = new JwtSecurityToken(
             claims: claims,
             expires: DateTime.Now.AddDays(1),
             signingCredentials: credentials
         );
 
-        if (token == null)
-        {
-            throw new InvalidOperationException("Token generation failed");
-        }
-
         return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    public string GetClaimValue<TEntity>(TEntity entity, string target) where TEntity : class
-    {
-        var property = typeof(TEntity).GetProperty(target,
-            BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-
-        if (property == null) return string.Empty;
-        var propertyValue = property.GetValue(entity);
-        return (propertyValue != null ? propertyValue.ToString() : string.Empty)!;
     }
 }
