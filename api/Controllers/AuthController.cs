@@ -10,10 +10,18 @@ namespace api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
+    private readonly PasswordService _passwordService;
+    private readonly TokenService _tokenService;
 
-    public AuthController(AuthService authService)
+    public AuthController(
+        AuthService authService,
+        PasswordService passwordService,
+        TokenService tokenService
+    )
     {
         _authService = authService;
+        _passwordService = passwordService;
+        _tokenService = tokenService;
     }
 
     /// <summary>
@@ -24,13 +32,14 @@ public class AuthController : ControllerBase
     /// <response code="200">Returns a token</response>
     /// <response code="409">If user already exists</response>
     [HttpPost]
+    [Route("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> RegisterUserAsync([FromBody] RegistrationDto registrationDto)
     {
         var userExists = await _authService.UserExistsAsync(registrationDto.Email);
 
-        if (userExists)
+        if (userExists != null)
         {
             return Conflict(new { message = "User exists" });
         }
@@ -40,8 +49,32 @@ public class AuthController : ControllerBase
         return Ok(new { token = result });
     }
 
-    public async Task<IActionResult> LoginUserAsync([FromBody] string name)
+    /// <summary>
+    /// Logins in a user.
+    /// </summary>
+    /// <param name="loginDto"></param>
+    /// <returns>Returns a token</returns>
+    /// <response code="200">Returns a token</response>
+    /// <response code="404">If user does not exist / password is wrong</response>
+    [HttpPost]
+    [Route("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> LoginUserAsync([FromBody] LoginDto loginDto)
     {
-        return Ok();
+        var userExists = await _authService.UserExistsAsync(loginDto.Email);
+
+        if (userExists == null)
+        {
+            return NotFound(new { message = "Invalid email or password provided" });
+        }
+
+
+        // validate password
+        var isValidPassword = _passwordService.PasswordIsValid(loginDto.Password, userExists.PasswordHash);
+
+        if (!isValidPassword) return NotFound(new { message = "Invalid password provided" });
+
+        return Ok(new { token = _tokenService.CreateToken(userExists) });
     }
 }
