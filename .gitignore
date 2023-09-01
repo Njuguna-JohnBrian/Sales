@@ -42,7 +42,6 @@ TestResults
 
 #Configurations
 .env
-appsettings.Development.json
 
 #Snapshooter
 __mismatch__/
