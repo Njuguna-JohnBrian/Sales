@@ -14,7 +14,11 @@ public class AuthService : IAuthService
     private readonly PasswordService _passwordService;
     private readonly TokenService _tokenService;
 
-    public AuthService(DatabaseContext databaseContext, PasswordService passwordService, IConfiguration config)
+    public AuthService(
+        DatabaseContext databaseContext,
+        PasswordService passwordService,
+        IConfiguration config
+    )
     {
         _context = databaseContext;
         _passwordService = passwordService;
@@ -22,12 +26,12 @@ public class AuthService : IAuthService
     }
 
 
-    public async Task<bool> UserExistsAsync(string email)
+    public async Task<UserEntity?> UserExistsAsync(string email)
     {
         var userExists =
             await _context.UserEntities.FirstOrDefaultAsync(entity => entity.Email == email);
 
-        return userExists != null;
+        return userExists;
     }
 
     public async Task<string> SaveUserAsync(RegistrationDto registrationDto)
@@ -45,7 +49,8 @@ public class AuthService : IAuthService
 
         await _context.SaveChangesAsync();
 
-        var token = _tokenService.CreateToken(user, new List<string> { "firstName", "lastName", "email", "id" });
+        var token = _tokenService.CreateToken(user);
+
         return token;
     }
 }
