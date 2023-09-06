@@ -2,9 +2,9 @@
 on:
   workflow_dispatch:
   pull_request:
-    branches: ["master"]
+    branches: ["dev"]
   push:
-    branches: ["master"]
+    branches: ["dev"]
 
 jobs:
   qodana:
