@@ -10,8 +10,8 @@ CREATE TABLE [dbo].[Roles]
   [UpdatedDTM] BIGINT NULL,
   [RowVersion] ROWVERSION,
   CONSTRAINT PK_Roles_Id PRIMARY KEY CLUSTERED ([Id]),
-  CONSTRAINT [FK_Projects_Roles_CreatedBy] FOREIGN KEY ([CreatedBy]) REFERENCES [dbo].[Users]  ([ID]),
-  CONSTRAINT [FK_Projects_Roles_UpdatedBy] FOREIGN KEY ([UpdatedBy]) REFERENCES [dbo].[Users]  ([ID]),
+  CONSTRAINT [FK_Projects_Roles_CreatedBy] FOREIGN KEY ([CreatedBy]) REFERENCES [dbo].[Users]  ([Id]),
+  CONSTRAINT [FK_Projects_Roles_UpdatedBy] FOREIGN KEY ([UpdatedBy]) REFERENCES [dbo].[Users]  ([Id]),
 
 );
 GO
