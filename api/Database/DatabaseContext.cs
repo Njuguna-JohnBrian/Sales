@@ -17,5 +17,6 @@ public class DatabaseContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new UserConfig());
-    }
+        
+    } 
 }
