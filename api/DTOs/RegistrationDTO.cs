@@ -19,4 +19,6 @@ public class RegistrationDto
     [Required(ErrorMessage = "Please confirm your password"),
      Compare("Password", ErrorMessage = "Passwords do not match")]
     public required string ConfirmPassword { get; set; }
+
+    public Guid? UserRoleId { get; set; } = Guid.Empty;
 }
