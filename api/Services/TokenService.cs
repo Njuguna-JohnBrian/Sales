@@ -17,7 +17,7 @@ public class TokenService : ITokenService
     }
 
 
-    public string CreateToken(UserEntity userEntity)
+    public string CreateToken(UserEntity userEntity, string? roleName)
     {
         if (userEntity == null) throw new NullReferenceException();
 
@@ -27,6 +27,7 @@ public class TokenService : ITokenService
             new("lastName", userEntity.LastName),
             new("email", userEntity.Email),
             new("id", userEntity.Id.ToString()),
+            new("roleName", roleName ?? "User"),
         };
 
         var secret = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Token"]!));
