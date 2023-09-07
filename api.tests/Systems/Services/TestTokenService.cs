@@ -32,7 +32,7 @@ public class TestTokenService
     [Fact]
     public void CreateToken_Returns_A_String_And_Is_Not_Null()
     {
-        var jwtToken = _tokenService.CreateToken(TestEntity);
+        var jwtToken = _tokenService.CreateToken(TestEntity, "User");
 
         jwtToken.Should().NotBeNullOrEmpty();
         jwtToken.Should().BeOfType<string>();
@@ -41,7 +41,7 @@ public class TestTokenService
     [Fact]
     public void CreateToken_Returns_A_Valid_Token()
     {
-        var jwtToken = _tokenService.CreateToken(TestEntity);
+        var jwtToken = _tokenService.CreateToken(TestEntity, "User");
         var tokenHandler = new JwtSecurityTokenHandler();
         var isValidToken = tokenHandler.CanReadToken(jwtToken);
 
