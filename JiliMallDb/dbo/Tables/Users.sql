@@ -9,12 +9,15 @@ CREATE TABLE [dbo].[Users]
     [ResetToken]          NVARCHAR(1000)         NULL,
     [ResetTokenExpiryDTM] DATETIME               NULL,
     [RegistrationDTM]     DATETIME               NOT NULL,
+    [UserRoleId]          BIGINT                 NULL,
     [UpdatedDTM]          DATETIME               NULL,
     [IsDeleted]           BIT                    NOT NULL DEFAULT (0),
     [DeletedBy]           BIGINT                 NULL,
     [DeletedDTM]          DATETIME               NULL,
     [RowVersion]          ROWVERSION,
-    CONSTRAINT PK_Users_Id PRIMARY KEY CLUSTERED ([Id])
+    CONSTRAINT PK_Users_Id PRIMARY KEY CLUSTERED ([Id]),
+    CONSTRAINT [FK_Roles_Users_UserRoleId] FOREIGN KEY ([UserRoleId]) REFERENCES [dbo].[Roles] ([Id]),
+
 
 );
 GO
@@ -23,6 +26,6 @@ CREATE NONCLUSTERED INDEX IX_Users_UserId
     ON [dbo].[Users] ([UserId])
 GO
 
-CREATE NONCLUSTERED INDEX UQ_Users_Email
+CREATE UNIQUE INDEX UQ_Users_Email
     ON [dbo].[Users] ([Email])
 GO
