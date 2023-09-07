@@ -36,12 +36,14 @@ public class AuthService : IAuthService
 
     public async Task<string> SaveUserAsync(RegistrationDto registrationDto)
     {
+        var roleId = await this.GetUserRoleAsync(registrationDto?.UserRoleId);
         var user = new UserEntity
         {
             FirstName = registrationDto.FirstName,
             LastName = registrationDto.LastName,
             Email = registrationDto.Email,
             PasswordHash = _passwordService.CreatePasswordHash(registrationDto.Password),
+            UserRoleId = roleId?.Id,
             RegistrationDtm = DateTime.Now,
         };
 
@@ -52,5 +54,23 @@ public class AuthService : IAuthService
         var token = _tokenService.CreateToken(user);
 
         return token;
+    }
+
+    public async Task<RoleEntity?> GetUserRoleAsync(Guid? roleId, string roleName = "User")
+    {
+        var roleQuery = _context.RoleEntities.AsQueryable();
+
+        if (roleId.HasValue && roleId != Guid.Empty)
+        {
+            roleQuery = roleQuery.Where(rl => rl.RoleId == roleId);
+        }
+
+        else
+        {
+            roleQuery = roleQuery.Where(rl => rl.RoleName == roleName);
+        }
+
+
+        return await roleQuery.FirstOrDefaultAsync() ?? null;
     }
 }
