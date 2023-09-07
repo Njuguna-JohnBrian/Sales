@@ -12,11 +12,12 @@ public class DatabaseContext : DbContext
 
 
     public virtual required DbSet<UserEntity> UserEntities { get; set; }
+    public virtual required DbSet<RoleEntity> RoleEntities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new UserConfig());
-        
-    } 
+        modelBuilder.ApplyConfiguration(new RoleConfig());
+    }
 }
