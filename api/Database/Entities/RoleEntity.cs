@@ -14,7 +14,4 @@ public sealed class RoleEntity
     public DateTime? UpdatedDtm { get; set; }
 #pragma warning disable CS8618
     [Timestamp] public byte[] RowVersion { get; set; }
-
-    public UserEntity CreatedByUserEntity { get; set; }
-    public UserEntity UpdatedByUserEntity { get; set; }
 }
