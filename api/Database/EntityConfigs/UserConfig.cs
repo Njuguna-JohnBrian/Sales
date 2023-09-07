@@ -10,6 +10,8 @@ public class UserConfig : IEntityTypeConfiguration<UserEntity>
     {
         builder.ToTable("Users");
         builder.Property(b => b.RowVersion);
+        builder.Property(uid => uid.UserId)
+            .ValueGeneratedOnAdd();
         builder.HasOne<RoleEntity>(rle => rle.RoleEntity)
             .WithMany()
             .HasForeignKey(usr => usr.UserRoleId);
