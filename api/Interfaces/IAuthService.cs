@@ -9,5 +9,5 @@ public interface IAuthService
 
     Task<string> SaveUserAsync(RegistrationDto registrationDto);
 
-    Task<RoleEntity?> GetUserRoleAsync(Guid? roleId, string roleName);
+    Task<RoleEntity?> GetUserRoleAsync(Guid? roleId, long? id, string roleName);
 }
