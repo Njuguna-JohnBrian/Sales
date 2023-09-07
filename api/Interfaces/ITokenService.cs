@@ -4,5 +4,5 @@ namespace api.Interfaces;
 
 public interface ITokenService
 {
-    public string CreateToken(UserEntity userEntity);
+    public string CreateToken(UserEntity userEntity, string? roleName);
 }
