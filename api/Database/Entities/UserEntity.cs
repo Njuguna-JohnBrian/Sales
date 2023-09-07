@@ -13,7 +13,7 @@ public sealed class UserEntity
     public string? ResetToken { get; set; }
     public DateTime? ResetTokenExpiryDtm { get; set; }
     public DateTime RegistrationDtm { get; set; }
-    public long UserRoleId { get; set; }
+    public long? UserRoleId { get; set; }
     public DateTime? UpdatedDtm { get; set; }
     public bool IsDeleted { get; set; }
     public long? DeletedBy { get; set; }
