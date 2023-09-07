@@ -75,6 +75,8 @@ public class AuthController : ControllerBase
 
         if (!isValidPassword) return NotFound(new { message = "Invalid password provided" });
 
-        return Ok(new { token = _tokenService.CreateToken(userExists) });
+        var roleName = await _authService.GetUserRoleAsync(null, userExists.UserRoleId, null);
+
+        return Ok(new { token = _tokenService.CreateToken(userExists, roleName?.RoleName) });
     }
 }
