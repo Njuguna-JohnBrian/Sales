@@ -9,13 +9,8 @@ public class RoleConfig : IEntityTypeConfiguration<RoleEntity>
     public void Configure(EntityTypeBuilder<RoleEntity> builder)
     {
         builder.ToTable("Roles");
-        builder.Property(b => b.RowVersion);
-        builder.HasOne<UserEntity>(s => s.CreatedByUserEntity)
-            .WithMany()
-            .HasForeignKey(r => r.CreatedBy);
-
-        builder.HasOne<UserEntity>(s => s.UpdatedByUserEntity)
-            .WithMany()
-            .HasForeignKey(r => r.UpdatedBy);
+        builder.Property(rl => rl.RowVersion);
+        builder.Property(rl => rl.RoleId)
+            .ValueGeneratedOnAdd();
     }
 }
