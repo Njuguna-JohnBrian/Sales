@@ -36,7 +36,7 @@ public class AuthService : IAuthService
 
     public async Task<string> SaveUserAsync(RegistrationDto registrationDto)
     {
-        var roleId = await this.GetUserRoleAsync(registrationDto?.UserRoleId, null);
+        var roleId = await GetUserRoleAsync(registrationDto.UserRoleId ?? null, null);
         var user = new UserEntity
         {
             FirstName = registrationDto.FirstName,
