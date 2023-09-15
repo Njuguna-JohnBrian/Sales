@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build">
   <Sdk Name="Microsoft.Build.Sql" Version="0.1.10-preview" />
   <PropertyGroup>
-    <Name>JiliMallDb</Name>
+    <Name>SalesDB</Name>
     <ProjectGuid>{576CEE4B-AAE3-4628-82AA-664FFDDE92B0}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
