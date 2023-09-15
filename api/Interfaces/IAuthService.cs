@@ -5,9 +5,9 @@ namespace api.Interfaces;
 
 public interface IAuthService
 {
-    Task<UserEntity?> UserExistsAsync(string email);
+    Task<UserEntity?> UserExists(string email);
 
-    Task<string> SaveUserAsync(RegistrationDto registrationDto);
+    Task<string> SaveUser(RegistrationDto registrationDto);
 
-    Task<RoleEntity?> GetUserRoleAsync(Guid? roleId, long? id, string roleName);
+    Task<RoleEntity?> GetUserRole(Guid? roleId, long? id, string roleName);
 }

@@ -35,16 +35,16 @@ public class AuthController : ControllerBase
     [Route("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> RegisterUserAsync([FromBody] RegistrationDto registrationDto)
+    public async Task<IActionResult> RegisterUser([FromBody] RegistrationDto registrationDto)
     {
-        var userExists = await _authService.UserExistsAsync(registrationDto.Email);
+        var userExists = await _authService.UserExists(registrationDto.Email);
 
         if (userExists != null)
         {
             return Conflict(new { message = "User exists" });
         }
 
-        var result = await _authService.SaveUserAsync(registrationDto);
+        var result = await _authService.SaveUser(registrationDto);
 
         return Ok(new { token = result });
     }
@@ -62,7 +62,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> LoginUserAsync([FromBody] LoginDto loginDto)
     {
-        var userExists = await _authService.UserExistsAsync(loginDto.Email);
+        var userExists = await _authService.UserExists(loginDto.Email);
 
         if (userExists == null)
         {
@@ -75,7 +75,7 @@ public class AuthController : ControllerBase
 
         if (!isValidPassword) return NotFound(new { message = "Invalid password provided" });
 
-        var roleName = await _authService.GetUserRoleAsync(null, userExists.UserRoleId, null);
+        var roleName = await _authService.GetUserRole(null, userExists.UserRoleId, null);
 
         return Ok(new { token = _tokenService.CreateToken(userExists, roleName?.RoleName) });
     }

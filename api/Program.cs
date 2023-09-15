@@ -3,7 +3,6 @@ using api.Database;
 using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -13,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<RoleService>();
 
 builder.Services.AddControllers();
 
