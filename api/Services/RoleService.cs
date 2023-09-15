@@ -1,5 +1,6 @@
 ﻿using api.Database;
 using api.Database.Entities;
+using api.DTOs;
 using api.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,31 @@ public class RoleService : IRoleService
     }
 
 
-    public async Task<List<RoleEntity>> GetRolesAsync()
+    public async Task<List<RoleEntity>> GetRoles()
     {
         var roles = await _context.RoleEntities.ToListAsync();
         return roles;
+    }
+
+    public async Task<RoleEntity> AddRole(RoleDto roleDto)
+    {
+        var role = new RoleEntity
+        {
+            RoleName = roleDto.RoleName,
+            RoleDescription = roleDto.RoleDescription
+        };
+
+        await _context.RoleEntities.AddAsync(role);
+        await _context.SaveChangesAsync();
+        return role;
+    }
+
+    public async Task<bool> RoleExists(string roleName)
+    {
+        var roleExists = await _context
+            .RoleEntities
+            .FirstOrDefaultAsync(rle => rle.RoleName == roleName);
+
+        return (roleExists == null);
     }
 }
