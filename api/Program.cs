@@ -1,7 +1,12 @@
+using System.Text;
 using api.Database;
 using api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +17,10 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+                         ??
+                         throw new InvalidOperationException("Connection string 'DefaultConnection' not found ")
+    ));
 
 // Add swagger
 builder.Services.AddSwaggerGen(swaggerGen =>
@@ -41,6 +49,7 @@ builder.Services.AddSwaggerGen(swaggerGen =>
             Array.Empty<string>()
         }
     });
+    swaggerGen.OperationFilter<SecurityRequirementsOperationFilter>();
 
     swaggerGen.EnableAnnotations();
 });
@@ -48,6 +57,20 @@ builder.Services.AddSwaggerGen(swaggerGen =>
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey =
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["Token"]!)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 
 var app = builder.Build();
 
@@ -69,6 +92,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
