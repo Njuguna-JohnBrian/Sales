@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
 using System.Security.Claims;
 using api.Database.Entities;
 using Microsoft.IdentityModel.Tokens;
@@ -27,7 +26,7 @@ public class TokenService : ITokenService
             new("lastName", userEntity.LastName),
             new("email", userEntity.Email),
             new("id", userEntity.Id.ToString()),
-            new("roleName", roleName ?? "User"),
+            new("role", (roleName ?? "user").ToLower()),
         };
 
         var secret = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Token"]!));
