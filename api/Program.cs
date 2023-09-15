@@ -25,7 +25,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 // Add swagger
 builder.Services.AddSwaggerGen(swaggerGen =>
 {
-    swaggerGen.SwaggerDoc("v1", new OpenApiInfo { Title = "JiliMall Api", Version = "v1" });
+    swaggerGen.SwaggerDoc("v1", new OpenApiInfo { Title = "Sales Api", Version = "v1" });
     swaggerGen.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
