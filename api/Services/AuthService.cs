@@ -26,7 +26,7 @@ public class AuthService : IAuthService
     }
 
 
-    public async Task<UserEntity?> UserExistsAsync(string email)
+    public async Task<UserEntity?> UserExists(string email)
     {
         var userExists =
             await _context.UserEntities.FirstOrDefaultAsync(entity => entity.Email == email);
@@ -34,9 +34,9 @@ public class AuthService : IAuthService
         return userExists;
     }
 
-    public async Task<string> SaveUserAsync(RegistrationDto registrationDto)
+    public async Task<string> SaveUser(RegistrationDto registrationDto)
     {
-        var roleId = await GetUserRoleAsync(registrationDto.UserRoleId ?? null, null);
+        var roleId = await GetUserRole(registrationDto.UserRoleId ?? null, null);
         var user = new UserEntity
         {
             FirstName = registrationDto.FirstName,
@@ -57,7 +57,7 @@ public class AuthService : IAuthService
     }
 
 
-    public async Task<RoleEntity?> GetUserRoleAsync(Guid? roleId, long? id, string roleName = "User")
+    public async Task<RoleEntity?> GetUserRole(Guid? roleId, long? id, string roleName = "User")
     {
         var roleQuery = _context.RoleEntities.AsQueryable();
 
