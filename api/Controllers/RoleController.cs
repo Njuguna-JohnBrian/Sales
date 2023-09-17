@@ -1,4 +1,4 @@
-﻿using api.Database.Entities;
+﻿using api.DTOs;
 using api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,5 +34,15 @@ public class RoleController : ControllerBase
                 rle.RoleDescription
             })
         );
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddRoleAsync([FromBody] RoleDto roleDto)
+    {
+        var roleExists = await _roleService.RoleExists(roleDto.RoleName);
+        if (!roleExists)
+            return Conflict("A role with that name exists");
+        await _roleService.AddRole(roleDto, HttpContext);
+        return Ok("Role created");
     }
 }
