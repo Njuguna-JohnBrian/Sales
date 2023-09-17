@@ -2,8 +2,6 @@
 using api.Database.Entities;
 using api.DTOs;
 using api.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Services;
@@ -11,10 +9,14 @@ namespace api.Services;
 public class RoleService : IRoleService
 {
     private readonly DatabaseContext _context;
+    private readonly TokenService _tokenService;
 
-    public RoleService(DatabaseContext databaseContext)
+    public RoleService(DatabaseContext databaseContext,
+        TokenService tokenService
+    )
     {
         _context = databaseContext;
+        _tokenService = tokenService;
     }
 
 
@@ -24,12 +26,17 @@ public class RoleService : IRoleService
         return roles;
     }
 
-    public async Task<RoleEntity> AddRole(RoleDto roleDto)
+    public async Task<RoleEntity> AddRole(RoleDto roleDto, HttpContext httpContext)
     {
         var role = new RoleEntity
         {
             RoleName = roleDto.RoleName,
-            RoleDescription = roleDto.RoleDescription
+            RoleDescription = roleDto.RoleDescription,
+            CreatedDtm = DateTime.Now,
+            CreatedBy = Convert.ToInt64(_tokenService
+                .DecodeTokenFromHeaders(httpContext.Request,
+                    "id")
+            )
         };
 
         await _context.RoleEntities.AddAsync(role);
