@@ -44,12 +44,27 @@ public class RoleService : IRoleService
         return role;
     }
 
-    public async Task<bool> RoleExists(string roleName)
+    public async Task<RoleEntity?> RoleExists(string roleName)
     {
         var roleExists = await _context
             .RoleEntities
             .FirstOrDefaultAsync(rle => rle.RoleName == roleName);
 
-        return (roleExists == null);
+        return roleExists;
+    }
+
+    public async Task<RoleEntity> UpdateRole(UpdateRoleDto updateRoleDto, RoleEntity roleEntity,
+        HttpContext httpContext)
+    {
+        roleEntity.RoleName = updateRoleDto.RoleName;
+        roleEntity.RoleDescription = updateRoleDto.RoleDescription;
+        roleEntity.UpdatedDtm = DateTime.Now;
+        roleEntity.UpdatedBy = Convert.ToInt64(_tokenService
+            .DecodeTokenFromHeaders(httpContext.Request,
+                "id")
+        );
+
+        await _context.SaveChangesAsync();
+        return roleEntity;
     }
 }
