@@ -40,9 +40,20 @@ public class RoleController : ControllerBase
     public async Task<IActionResult> AddRoleAsync([FromBody] RoleDto roleDto)
     {
         var roleExists = await _roleService.RoleExists(roleDto.RoleName);
-        if (!roleExists)
+        if (roleExists != null)
             return Conflict("A role with that name exists");
         await _roleService.AddRole(roleDto, HttpContext);
         return Ok("Role created");
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateRoleAsync([FromBody] UpdateRoleDto updateRoleDto)
+    {
+        var roleExists = await _roleService.RoleExists(updateRoleDto.RoleName);
+        if (roleExists == null)
+            return Conflict("A role with that doesn't exist");
+        await _roleService.UpdateRole(updateRoleDto, roleExists, HttpContext);
+
+        return Ok($"Role {updateRoleDto.RoleName} updated");
     }
 }
