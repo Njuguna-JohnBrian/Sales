@@ -7,5 +7,5 @@ namespace api.Interfaces;
 public interface IRoleService
 {
     Task<List<RoleEntity>> GetRoles();
-    Task<RoleEntity> AddRole(RoleDto roleDto);
+    Task<RoleEntity> AddRole(RoleDto roleDto, HttpContext httpContext);
 }
