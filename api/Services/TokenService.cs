@@ -3,6 +3,7 @@ using System.Security.Claims;
 using api.Database.Entities;
 using Microsoft.IdentityModel.Tokens;
 using api.Interfaces;
+using Microsoft.Net.Http.Headers;
 
 namespace api.Services;
 
@@ -38,5 +39,39 @@ public class TokenService : ITokenService
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public string DecodeTokenFromHeaders(HttpRequest request, string targetClaim)
+    {
+        var token = ParseBearerToken(request);
+        var decodedClaim = ReadToken(token, targetClaim);
+
+        return decodedClaim;
+    }
+
+    public string ParseBearerToken(HttpRequest httpRequest)
+    {
+        var bearerToken = httpRequest.Headers[HeaderNames.Authorization]
+            .ToString().Replace("Bearer", "")
+            .Trim();
+        
+        if (string.IsNullOrEmpty(bearerToken))
+        {
+            throw new InvalidOperationException("Failed to get  bearer token from request");
+        }
+
+        return bearerToken;
+    }
+
+    public string ReadToken(string token, string targetClaim)
+    {
+        var decodedClaim = (new JwtSecurityTokenHandler()
+                .ReadToken(token) as JwtSecurityToken)!
+            .Claims.AsEnumerable()
+            .First(claim => claim.Type == targetClaim).Value;
+
+        if (string.IsNullOrEmpty(decodedClaim))
+            throw new InvalidOperationException($"Failed to decode {targetClaim} from token");
+        return decodedClaim;
     }
 }
