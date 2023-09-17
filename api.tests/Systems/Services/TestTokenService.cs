@@ -112,12 +112,12 @@ public class TestTokenService
 
 
     [Fact]
-    public  void DecodeTokenFromHeaders_Return_CorrectValue()
+    public void DecodeTokenFromHeaders_Return_CorrectValue()
     {
         _mockHttpRequest.Setup(r =>
                 r.Headers[HeaderNames.Authorization])
             .Returns(new Microsoft.Extensions.Primitives.StringValues($"Bearer {_jwtToken}"));
-        
+
 
         var httpRequest = _mockHttpContext.Object.Request;
 
