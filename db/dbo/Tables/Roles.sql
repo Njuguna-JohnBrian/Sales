@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[Roles]
     [CreatedBy]       BIGINT                 NULL,
     [CreatedDTM]      DATETIME               NULL,
     [UpdatedBy]       BIGINT                 NULL,
-    [UpdatedDTM]      BIGINT                 NULL,
+    [UpdatedDTM]      DATETIME                 NULL,
     [RowVersion]      ROWVERSION,
     CONSTRAINT PK_Roles_Id PRIMARY KEY CLUSTERED ([Id]),
     CONSTRAINT [FK_Users_Roles_CreatedBy] FOREIGN KEY ([CreatedBy]) REFERENCES [dbo].[Users] ([Id]),
