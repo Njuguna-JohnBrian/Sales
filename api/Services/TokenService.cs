@@ -54,7 +54,7 @@ public class TokenService : ITokenService
         var bearerToken = httpRequest.Headers[HeaderNames.Authorization]
             .ToString().Replace("Bearer", "")
             .Trim();
-        
+
         if (string.IsNullOrEmpty(bearerToken))
         {
             throw new InvalidOperationException("Failed to get  bearer token from request");
@@ -65,6 +65,9 @@ public class TokenService : ITokenService
 
     public string ReadToken(string token, string targetClaim)
     {
+        if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(targetClaim))
+            throw new InvalidOperationException("Token and Target Claim are required");
+        
         var decodedClaim = (new JwtSecurityTokenHandler()
                 .ReadToken(token) as JwtSecurityToken)!
             .Claims.AsEnumerable()
