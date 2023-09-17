@@ -82,7 +82,7 @@ if (app.Environment.IsDevelopment())
 
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "JiliMall Api");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Sales Api");
 
         // serve swagger in the root api endpoint
         options.RoutePrefix = string.Empty;
