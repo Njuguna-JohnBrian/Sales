@@ -9,6 +9,7 @@ namespace api.Controllers;
 [Route("/role")]
 [Produces("application/json")]
 [Authorize(Roles = "admin")]
+[AllowAnonymous]
 public class RoleController : ControllerBase
 {
     private readonly RoleService _roleService;
