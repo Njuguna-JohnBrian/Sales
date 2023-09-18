@@ -10,9 +10,12 @@ public class DatabaseContext : DbContext
     {
     }
 
-
-    public virtual required DbSet<UserEntity> UserEntities { get; set; }
-    public virtual required DbSet<RoleEntity> RoleEntities { get; set; }
+    protected DatabaseContext()
+    {
+    }
+    
+    public virtual  DbSet<UserEntity> UserEntities { get; set; }
+    public virtual  DbSet<RoleEntity> RoleEntities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
