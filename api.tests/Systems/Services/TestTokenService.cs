@@ -11,7 +11,6 @@ public class TestTokenService
     private readonly Mock<IConfiguration> _mockConfiguration = new();
     private readonly Mock<HttpRequest> _mockHttpRequest = new();
     private readonly Mock<HttpContext> _mockHttpContext = new();
-    private readonly Mock<ITokenService> _mockTokenService = new();
     private readonly TokenService _tokenService;
 
     private static readonly UserEntity TestEntity = new()

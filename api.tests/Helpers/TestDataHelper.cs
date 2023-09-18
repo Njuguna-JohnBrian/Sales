@@ -6,7 +6,7 @@ public class TestDataHelper
 {
     public static List<UserEntity> GetFakeUsersList()
     {
-        return new List<UserEntity>()
+        return new List<UserEntity>
         {
             new()
             {
@@ -15,6 +15,24 @@ public class TestDataHelper
                 LastName = "testUser",
                 Email = "test@email.com",
                 PasswordHash = "$2a$11$8STxovb1zSpiMqGkxOcJbOkKvvUTYWWEE2dW92mmpZ1JvPhDUJwjO"
+            }
+        };
+    }
+
+    public static List<RoleEntity> GetFakeRolesList()
+    {
+        return new List<RoleEntity>
+        {
+            new()
+            {
+                Id = 1,
+                RoleId = new Guid(),
+                RoleName = "test",
+                RoleDescription = "test",
+                CreatedBy = 1,
+                CreatedDtm = DateTime.Now,
+                UpdatedBy = 1,
+                UpdatedDtm = DateTime.Now
             }
         };
     }
