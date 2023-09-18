@@ -8,7 +8,8 @@ namespace api.Controllers;
 [ApiController]
 [Route("/role")]
 [Produces("application/json")]
-[Authorize(Roles = "admin")]
+[Authorize(Roles = "merchant")]
+[AllowAnonymous]
 public class RoleController : ControllerBase
 {
     private readonly RoleService _roleService;
