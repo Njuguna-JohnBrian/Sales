@@ -48,6 +48,7 @@ jobs:
         with:
           recreate: true
           path: code-coverage-results.md
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Write to Job Summary
         run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
