@@ -4,7 +4,7 @@ namespace api.DTOs;
 
 public class RegistrationDto
 {
-    [Required(ErrorMessage = "Email is required"), EmailAddress(ErrorMessage = "Email is invalid")]
+    [Required(ErrorMessage = "Email Address is required"), EmailAddress(ErrorMessage = "Email Address is invalid")]
     public required string Email { get; set; }
 
     [Required(ErrorMessage = "First name is required"), MinLength(3, ErrorMessage = "First name is too short")]
